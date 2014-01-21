@@ -1,0 +1,5 @@
+{
+    "run_list" : [
+        "recipe[vskel_centos6.5]"
+    ]
+}
