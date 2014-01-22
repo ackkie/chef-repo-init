@@ -101,3 +101,51 @@ webalizer
     action :install
   end
 end
+
+# デフォルト無効サービス停止
+
+# NetworkManager off サーバなら停止
+# acpid on 仮想ゲストで必要？
+# avahi-daemon off mac形式
+# bluetooth off
+# cpuspeed off 仮想では不要
+# cups off
+# haldaemon off 'mouse,keyboard,usb等プラグ&プレイ使わなければ不要'
+# ip6tables off
+# iscsi off
+# iscsid off
+# kdump off メモリを食うため停止
+# lm_sensors off ipmiでよい
+# mdmonitor off 'For Software Raid'
+# qpidd off 'MQ現状小規模では不要'
+# smartd off 監視対象がなければ不要
+# nfslock off NFSを使用使用しなければ不要
+
+%w{
+abrt-ccpp
+abrtd
+autofs
+avahi-daemon
+bluetooth
+cpuspeed
+cups
+freenx-server
+haldaemon
+ip6tables
+iscsi
+iscsid
+kdump
+lm_sensors
+mdmonitor
+psacct
+qpidd
+restorecond
+smartd
+sysstat
+nfslock
+}.each { |name|
+  service name do
+    ignore_failure true
+    action [:disable, :stop]
+  end
+}
