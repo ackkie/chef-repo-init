@@ -17,6 +17,7 @@ script "secure_installation" do
     mysql -u root -e "DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');"
     mysql -u root -e "DROP DATABASE test;"
     mysql -u root -e "DELETE FROM mysql.db WHERE Db='test' OR Db='test\_%';"
-    mysqladmin -u root password "hogehoge"
+    mysql -u root -e "UPDATE mysql.user SET Password=PASSWORD('hoge') WHERE User='root'"
+    mysql -u root -e "FLUSH PRIVILEGES;"
   EOS
 end
