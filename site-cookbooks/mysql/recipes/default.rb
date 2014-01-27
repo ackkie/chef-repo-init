@@ -16,6 +16,13 @@ execute "mysql-server-install" do
 end
 
 # ここで/etc/my.cnfを設定
+template "my.cnf" do
+  path "/etc/my.cnf"
+  owner "root"
+  group "root"
+  mode 0644
+#  notifies :reload, 'service[mysqld]'
+end
 
 #サービススタート
 execute "mysql-server start" do
@@ -41,4 +48,5 @@ end
 service "mysqld" do
   supports status: true, restart: true, reload: true
   action   [ :enable, :start ]
+  subscribes :reload, "template[my.cnf]"
 end
