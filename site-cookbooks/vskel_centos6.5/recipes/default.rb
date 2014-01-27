@@ -141,7 +141,6 @@ psacct
 qpidd
 restorecond
 smartd
-sysstat
 nfslock
 }.each { |name|
   service name do
