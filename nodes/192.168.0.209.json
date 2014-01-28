@@ -1,5 +1,9 @@
 {
-    "run_list" : [
+    "mysql": {
+        "innodb_buffer_pool_size": "800M"
+    },
+
+    "run_list": [
         "recipe[vskel_centos6.5]",
         "recipe[mysql]"
     ]

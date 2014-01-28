@@ -15,7 +15,14 @@ execute "mysql-server-install" do
   not_if  { File.exists?('/etc/rc.d/init.d/mysqld') }
 end
 
-# ここで/etc/my.cnfを設定
+file "/var/log/mysql-slow.log" do
+  owner "mysql"
+  group "mysql"
+  mode 0640
+  action :create_if_missing
+end
+
+Encoding.default_external = Encoding::UTF_8
 template "my.cnf" do
   path "/etc/my.cnf"
   owner "root"
@@ -27,7 +34,8 @@ end
 #サービススタート
 execute "mysql-server start" do
   not_if  { File.exists?('/var/run/mysqld') }
-  command "service mysqld start"
+# sleepをいれておかないとtestdbができないため
+  command "service mysqld start && sleep 30"
   action  :run
 end
 
@@ -48,5 +56,5 @@ end
 service "mysqld" do
   supports status: true, restart: true, reload: true
   action   [ :enable, :start ]
-  subscribes :reload, "template[my.cnf]"
+  subscribes :restart, "template[my.cnf]"
 end
