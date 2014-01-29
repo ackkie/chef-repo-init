@@ -1,11 +1,18 @@
 {
     "mysql": {
+        "root_password": "kari",
         "innodb_buffer_pool_size": "800M"
+    },
+
+    "zabbix": {
+        "DBPassword": "kari"
     },
 
     "run_list": [
         "recipe[vskel_centos6.5]",
         "recipe[mysql]",
-        "recipe[zabbix::yum]"
+        "recipe[zabbix::yum]",
+        "recipe[zabbix::agent]",
+        "recipe[zabbix]"
     ]
 }

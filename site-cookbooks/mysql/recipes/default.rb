@@ -8,11 +8,10 @@
 # All rights reserved - Do Not Redistribute
 #
 
-#もっとよいかきかたがあるはず
 execute "mysql-server-install" do
   command "yum -y install mysql-server --enablerepo=remi"
   action  :run
-  not_if  { File.exists?('/etc/rc.d/init.d/mysqld') }
+  not_if  "rpm -q mysql-server"
 end
 
 file "/var/log/mysql-slow.log" do
@@ -48,9 +47,16 @@ script "mysql_secure_installation" do
     mysql -u root -e "DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');"
     mysql -u root -e "DROP DATABASE test;"
     mysql -u root -e "DELETE FROM mysql.db WHERE Db='test' OR Db='test\_%';"
-    mysql -u root -e "UPDATE mysql.user SET Password=PASSWORD('hoge') WHERE User='root'"
+    mysql -u root -e "UPDATE mysql.user SET Password=PASSWORD('kari') WHERE User='root'"
     mysql -u root -e "FLUSH PRIVILEGES;"
   EOS
+end
+
+template "/root/.my.cnf" do
+  source "dotmy.cnf.erb"
+  owner "root"
+  group "root"
+  mode 0600
 end
 
 service "mysqld" do

@@ -8,24 +8,24 @@
 # All rights reserved - Do Not Redistribute
 #
 
-bash "install-zabbix-server-mysql" do
+bash "install-zabbix-agent" do
   code <<-EOC
-    yum -y install zabbix-server-mysql zabbix-web-mysql zabbix-web-japanese zabbix-get \
+    yum -y install zabbix-agent zabbix-sender \
       --enablerepo=zabbix,zabbix-non-supported
   EOC
-  action  :run
-  not_if { File.exists?('/etc/zabbix/zabbix_server.conf') }
+  action :run
+  not_if "rpm -q zabbix-agent && rpm -q zabbix-sender"
 end
 
 Encoding.default_external = Encoding::UTF_8
-template "/etc/zabbix/zabbix_server.conf" do
+template "/etc/zabbix/zabbix_agentd.conf" do
   owner "root"
-  group "zabbix"
-  mode 0640
+  group "root"
+  mode 0644
 end
 
-service "zabbix-server" do
+service "zabbix-agent" do
   supports status: true, restart: true, reload: true
   action   [ :enable, :start ]
-  subscribes :restart, "template[/etc/zabbix/zabbix_server.conf]"
+  subscribes :restart, "template[/etc/zabbix/zabbix_agentd.conf]"
 end
