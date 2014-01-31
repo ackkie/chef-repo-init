@@ -8,8 +8,15 @@
         "DBPassword": "kari"
     },
 
+    "iptables": {
+        "easy_tcp_port_list": "22,80"
+    },
+
     "run_list": [
         "recipe[vskel_centos6.5]",
+        "recipe[iptables]",
+        "recipe[php]",
+        "recipe[apache]",
         "recipe[mysql]",
         "recipe[zabbix::yum]",
         "recipe[zabbix::agent]",

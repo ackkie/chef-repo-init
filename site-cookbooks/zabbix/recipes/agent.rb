@@ -25,7 +25,7 @@ template "/etc/zabbix/zabbix_agentd.conf" do
 end
 
 service "zabbix-agent" do
-  supports status: true, restart: true, reload: true
+  supports status: true, restart: true, reload: false
   action   [ :enable, :start ]
   subscribes :restart, "template[/etc/zabbix/zabbix_agentd.conf]"
 end

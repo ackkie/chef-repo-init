@@ -27,7 +27,7 @@ template "my.cnf" do
   owner "root"
   group "root"
   mode 0644
-#  notifies :reload, 'service[mysqld]'
+#  notifies :restart, 'service[mysqld]'
 end
 
 #サービススタート
@@ -38,17 +38,20 @@ execute "mysql-server start" do
   action  :run
 end
 
+#todo
+root_password="kari"
+
 script "mysql_secure_installation" do
   interpreter 'bash'
   user "root"
   only_if { File.exists?('/var/lib/mysql/test') }
   code <<-EOS
-    mysql -u root -e "DELETE FROM mysql.user WHERE User='';"
-    mysql -u root -e "DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');"
-    mysql -u root -e "DROP DATABASE test;"
-    mysql -u root -e "DELETE FROM mysql.db WHERE Db='test' OR Db='test\_%';"
-    mysql -u root -e "UPDATE mysql.user SET Password=PASSWORD('kari') WHERE User='root'"
-    mysql -u root -e "FLUSH PRIVILEGES;"
+    mysql -u root -h 127.0.0.1 -e "DELETE FROM mysql.user WHERE User='';"
+    mysql -u root -h 127.0.0.1 -e "DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');"
+    mysql -u root -h 127.0.0.1 -e "DROP DATABASE test;"
+    mysql -u root -h 127.0.0.1 -e "DELETE FROM mysql.db WHERE Db='test' OR Db='test\_%';"
+    mysql -u root -h 127.0.0.1 -e "UPDATE mysql.user SET Password=PASSWORD('#{root_password}') WHERE User='root'"
+    mysql -u root -h 127.0.0.1 -e "FLUSH PRIVILEGES;"
   EOS
 end
 
@@ -60,7 +63,7 @@ template "/root/.my.cnf" do
 end
 
 service "mysqld" do
-  supports status: true, restart: true, reload: true
+  supports status: true, restart: true, reload: false
   action   [ :enable, :start ]
   subscribes :restart, "template[my.cnf]"
 end
