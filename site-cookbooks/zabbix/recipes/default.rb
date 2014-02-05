@@ -43,6 +43,30 @@ template "/etc/zabbix/zabbix_server.conf" do
   mode 0640
 end
 
+bash "setsebool-zabbix_can_network" do
+  code <<-EOC
+    setsebool -P zabbix_can_network on
+  EOC
+  action  :run
+  not_if "(getsebool zabbix_can_network 2>/dev/null | grep -E 'on$')"
+end
+
+bash "setsebool-allow_polyinstantiation" do
+  code <<-EOC
+    setsebool -P allow_polyinstantiation on
+  EOC
+  action  :run
+  not_if "(getsebool allow_polyinstantiation 2>/dev/null | grep -E 'on$')"
+end
+
+bash "setsebool-httpd_can_network_connect" do
+  code <<-EOC
+    setsebool -P httpd_can_network_connect on
+  EOC
+  action  :run
+  not_if "(getsebool httpd_can_network_connect 2>/dev/null | grep -E 'on$')"
+end
+
 service "zabbix-server" do
   supports status: true, restart: true, reload: false
   action   [ :enable, :start ]
