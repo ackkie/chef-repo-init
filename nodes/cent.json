@@ -1,0 +1,6 @@
+{
+    "run_list": [
+        "recipe[zabbix::yum]",
+        "recipe[zabbix::agent]"
+    ]
+}

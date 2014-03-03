@@ -43,6 +43,13 @@ template "/etc/zabbix/zabbix_server.conf" do
   mode 0640
 end
 
+#http conf
+template "/etc/httpd/conf.d/zabbix.conf" do
+  owner "root"
+  group "root"
+  mode 0644
+end
+
 bash "setsebool-zabbix_can_network" do
   code <<-EOC
     setsebool -P zabbix_can_network on

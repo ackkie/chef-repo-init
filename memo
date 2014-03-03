@@ -1,1 +1,8 @@
 knife solo prepare hoge@fuga
+
+# テストラン (-W)
+knife solo cook hoge@fuga -W
+
+# 指定ラン
+knife solo cook hoge@fuga -o zabbix -W
+knife solo cook hoge@fuga -o zabbix::agent
