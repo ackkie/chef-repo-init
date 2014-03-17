@@ -24,6 +24,20 @@ template "/etc/zabbix/zabbix_agentd.conf" do
   mode 0644
 end
 
+###########################################
+template "/etc/zabbix/zabbix_agentd.d/userparameter_custom.conf" do
+  owner "root"
+  group "root"
+  mode 0644
+end
+
+file "/usr/local/bin/zabbix-rss.pl" do
+  owner "root"
+  group "root"
+  mode 0755
+end
+###########################################
+
 service "zabbix-agent" do
   supports status: true, restart: true, reload: false
   action   [ :enable, :start ]
