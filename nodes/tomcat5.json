@@ -1,0 +1,10 @@
+{
+    "zabbix": {
+        "Server": "192.168.0.209"
+    },
+
+    "run_list": [
+        "recipe[zabbix::yum]",
+        "recipe[zabbix::agent]"
+    ]
+}
