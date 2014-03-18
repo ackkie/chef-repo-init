@@ -8,7 +8,7 @@
 # All rights reserved - Do Not Redistribute
 #
 
-zabbix_version="2.2.1"
+zabbix_version="2.2.2"
 #todo databagへ
 zabbix_db_password="kari"
 

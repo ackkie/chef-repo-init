@@ -9,7 +9,7 @@
     },
 
     "iptables": {
-        "easy_tcp_port_list": "22,80"
+        "easy_tcp_port_list": "22,80,10050"
     },
 
     "run_list": [
