@@ -32,7 +32,7 @@ end
 
 #サービススタート
 execute "mysql-server start" do
-  not_if  { File.exists?('/var/run/mysqld') }
+  not_if  { File.exists?('/var/run/mysqld/mysqld.pid') }
 # sleepをいれておかないとtestdbができないため
   command "service mysqld start && sleep 30"
   action  :run

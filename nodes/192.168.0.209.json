@@ -20,6 +20,7 @@
         "recipe[mysql]",
         "recipe[zabbix::yum]",
         "recipe[zabbix::agent]",
-        "recipe[zabbix]"
+        "recipe[zabbix::java-gateway]",
+        "recipe[zabbix::default]"
     ]
 }
